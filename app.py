@@ -6,15 +6,26 @@ from flask import Flask, abort, g, redirect, render_template, request, url_for
 
 from translations import LANGUAGES, MESSAGES
 
+# Create the Flask application and configure where the SQLite file lives and
+# how large an incoming request body is allowed to be (a small limit here since
+# this app only accepts a short name + service selection).
 app = Flask(__name__)
 app.config["DATABASE"] = Path(app.instance_path) / "queue.sqlite3"
 app.config["MAX_CONTENT_LENGTH"] = 4096
 
+# The services a customer is allowed to pick. Used to validate form input.
 SERVICES = ("haircut", "beard", "combo")
 
 
 @app.template_filter("ordinal")
 def ordinal(number):
+    """Jinja filter: turn a plain number into its ordinal word form.
+
+    Example: 1 -> "1st", 2 -> "2nd", 3 -> "3rd", 4 -> "4th".
+    The 11/12/13 range is special-cased because those always take "th"
+    (11th, 12th, 13th) even though they end in 1, 2, 3.
+    Used in the templates to display queue positions.
+    """
     number = int(number)
     if 10 <= number % 100 <= 20:
         suffix = "th"
@@ -24,6 +35,13 @@ def ordinal(number):
 
 
 def database():
+    """Return the request-scoped SQLite connection, creating it on first use.
+
+    The connection is cached on Flask's `g` object so the same connection is
+    reused for the whole request. On first access it also ensures the instance
+    folder exists and creates the `tickets` table if it isn't there yet.
+    Rows come back as dict-like `sqlite3.Row` objects.
+    """
     if "db" not in g:
         path = Path(app.config["DATABASE"])
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -43,6 +61,11 @@ def database():
 
 @app.teardown_appcontext
 def close_database(_error):
+    """Close the SQLite connection at the end of each request.
+
+    Flask calls this automatically when the application context tears down,
+    so we never leak open database connections.
+    """
     db = g.pop("db", None)
     if db is not None:
         db.close()
@@ -50,6 +73,15 @@ def close_database(_error):
 
 @app.before_request
 def select_language():
+    """Decide which language to use for this request and store it on `g.lang`.
+
+    Priority order:
+      1. An explicit `?lang=` query parameter, if it's a supported language.
+      2. Otherwise fall back to the browser's Accept-Language header, picking
+         the first supported language it lists.
+      3. Default to English if nothing matches.
+    Runs before every request so all views and templates can read `g.lang`.
+    """
     requested = request.args.get("lang")
     if requested in LANGUAGES:
         g.lang = requested
@@ -64,6 +96,12 @@ def select_language():
 
 
 def page(template, **context):
+    """Render a template with the shared context every page needs.
+
+    Injects the translated message dictionary for the current language (`t`)
+    and the list of available `languages`, then merges in any extra context
+    passed by the caller. Keeps the individual views from repeating this setup.
+    """
     return render_template(
         template, t=MESSAGES[g.lang], languages=LANGUAGES, **context
     )
@@ -71,6 +109,14 @@ def page(template, **context):
 
 @app.route("/", methods=["GET", "POST"])
 def join():
+    """Customer check-in page (the home route).
+
+    GET  -> show the empty join form.
+    POST -> validate the submitted name and service. On bad input, re-render
+            the form with an error and a 400 status. On success, create a new
+            ticket with a unique token and redirect the customer to their
+            ticket page (303 so a refresh doesn't resubmit the form).
+    """
     if request.method == "GET":
         return page("join.html", services=SERVICES)
 
@@ -91,6 +137,13 @@ def join():
 
 @app.get("/ticket/<token>")
 def ticket(token):
+    """Show a single customer's ticket and their current queue position.
+
+    Looks up the ticket by its token and, in the same query, counts how many
+    not-yet-completed tickets were created before it (`ahead`) — that number
+    plus one is the customer's place in line. Returns 404 if the token is
+    unknown.
+    """
     entry = database().execute("""
         SELECT name, service, completed,
             (SELECT COUNT(*) FROM tickets AS earlier
@@ -105,6 +158,11 @@ def ticket(token):
 
 @app.get("/barber")
 def barber():
+    """Barber dashboard: list everyone still waiting, in arrival order.
+
+    Selects all tickets that haven't been completed yet, ordered by id (the
+    order they joined), and hands them to the template to render the queue.
+    """
     entries = database().execute("""
         SELECT token, name, service
         FROM tickets WHERE completed = 0 ORDER BY id
@@ -114,6 +172,12 @@ def barber():
 
 @app.post("/barber/complete/<token>")
 def complete(token):
+    """Mark a ticket as completed, then return to the barber dashboard.
+
+    Triggered when the barber presses "complete" on a customer. Flips the
+    ticket's `completed` flag to 1 (which removes it from the waiting queue)
+    and redirects back to /barber (303 to avoid resubmitting on refresh).
+    """
     db = database()
     with db:
         db.execute("UPDATE tickets SET completed = 1 WHERE token = ?", (token,))
@@ -122,6 +186,12 @@ def complete(token):
 
 @app.after_request
 def prevent_queue_caching(response):
+    """Stop browsers from caching dynamic pages so positions stay current.
+
+    Adds a `Cache-Control: no-store` header to every non-static response, so a
+    customer or barber always sees the live queue state instead of a stale
+    cached copy. Static assets (CSS) are left cacheable.
+    """
     if request.endpoint != "static":
         response.headers["Cache-Control"] = "no-store"
     return response
