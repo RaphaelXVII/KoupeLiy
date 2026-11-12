@@ -8,7 +8,7 @@
       <p class="status">{{ t.finished }}</p>
     {% else %}
       <p class="status">{{ t.waiting if entry.ahead else t.next }}</p>
-      <p>{{ t.position }} <strong class="position">{{ entry.ahead + 1 }}</strong></p>
+      <p>{{ t.position }} <strong class="position">{{ (entry.ahead + 1) | ordinal }}</strong></p>
       <a href="{{ url_for('ticket', token=request.view_args.token, lang=g.lang) }}">{{ t.refresh }}</a>
     {% endif %}
   </section>

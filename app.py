@@ -13,6 +13,16 @@ app.config["MAX_CONTENT_LENGTH"] = 4096
 SERVICES = ("haircut", "beard", "combo")
 
 
+@app.template_filter("ordinal")
+def ordinal(number):
+    number = int(number)
+    if 10 <= number % 100 <= 20:
+        suffix = "th"
+    else:
+        suffix = {1: "st", 2: "nd", 3: "rd"}.get(number % 10, "th")
+    return f"{number}{suffix}"
+
+
 def database():
     if "db" not in g:
         path = Path(app.config["DATABASE"])

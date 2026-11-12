@@ -12,7 +12,7 @@
         {% for entry in entries %}
           <li>
             <div class="queue-entry">
-              <div><strong>{{ entry.name }}</strong><br><span class="muted">{{ t[entry.service] }}</span></div>
+              <div><span class="position">{{ loop.index | ordinal }}</span> <strong>{{ entry.name }}</strong><br><span class="muted">{{ t[entry.service] }}</span></div>
               <form method="post" action="{{ url_for('complete', token=entry.token, lang=g.lang) }}">
                 <button type="submit">{{ t.complete }}</button>
               </form>
