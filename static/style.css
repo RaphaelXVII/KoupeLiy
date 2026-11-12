@@ -34,11 +34,13 @@ main { max-width: 70.5rem; padding: 1.5rem 1.25rem 3rem; margin: auto; }
 .join-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 1rem; }
 .intro, .card { border-radius: 1.25rem; padding: clamp(1.25rem, 4vw, 3rem); }
 .intro {
-  display: grid;
-  align-content: center;
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 2.5rem);
   background: #0057b7;
   color: #fcfbf6;
 }
+.intro-text { display: grid; align-content: center; }
 .intro h1 { max-width: 13ch; font-size: clamp(2.5rem, 6vw, 4.75rem); letter-spacing: -.06em; }
 .intro p { max-width: 34ch; margin-bottom: 0; color: #dce7f5; }
 .card { background: #fffdf9; border: 1px solid #dedfd5; }
@@ -86,4 +88,67 @@ button:hover { background: #0057b7; }
 @media (max-width: 42rem) {
   .join-layout { grid-template-columns: 1fr; }
   .languages { margin-bottom: 1.25rem; }
+}
+
+/* --- Spinning barber pole --- */
+/* A rounded silver "cylinder" with metallic caps. The inner element carries
+   the diagonal red/blue stripes (a repeating-linear-gradient) and animates its
+   background-position to look like the stripes are spinning upward. A glossy
+   highlight overlay gives the glass tube a rounded, 3D look. */
+.barber-pole {
+  flex: none;
+  position: relative;
+  width: clamp(2.5rem, 6vw, 3.25rem);
+  height: clamp(8rem, 22vw, 12rem);
+  border-radius: 999px;
+  /* metallic silver frame */
+  padding: 0.9rem 0;
+  background: linear-gradient(90deg, #6b7076 0%, #d7dde3 18%, #f4f7fa 42%, #aeb6bd 70%, #5c6166 100%);
+  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 0, 0.4);
+}
+/* Silver end-caps (top and bottom knobs) */
+.barber-pole::before,
+.barber-pole::after {
+  content: "";
+  position: absolute;
+  left: -8%;
+  width: 116%;
+  height: 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #585d63 0%, #e9edf1 35%, #ffffff 50%, #b4bbc1 72%, #52575c 100%);
+  box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.45);
+  z-index: 2;
+}
+.barber-pole::before { top: 0; }
+.barber-pole::after { bottom: 0; }
+.barber-pole-stripes {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  /* Red and blue diagonal stripes on a white background
+     (red, white, blue, white, ...) */
+  background-image: repeating-linear-gradient(
+    60deg,
+    #d7272b 0 12px,
+    #ffffff 12px 24px,
+    #0057b7 24px 36px,
+    #ffffff 36px 48px
+  );
+  background-size: 100% 48px;
+  animation: barber-pole-spin 1.6s linear infinite;
+}
+/* Glossy glass highlight removed so each stripe stays one solid flat color. */
+@keyframes barber-pole-spin {
+  from { background-position: 0 0; }
+  to   { background-position: 0 48px; }
+}
+/* Respect users who prefer reduced motion: show the stripes, don't spin them. */
+@media (prefers-reduced-motion: reduce) {
+  .barber-pole-stripes { animation: none; }
+}
+/* On narrow screens the hero stacks, so center the pole under the text. */
+@media (max-width: 42rem) {
+  .intro { flex-direction: column; align-items: flex-start; }
 }
