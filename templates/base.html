@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{ g.lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>{% block title %}{% endblock %} · KoupeLiy</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('join', lang=g.lang) }}">Koupe<span>Liy</span></a>
+    <a class="dashboard-link" href="{{ url_for('barber', lang=g.lang) }}">{{ t.barber }}</a>
+  </header>
+  <main>
+    <nav class="languages" aria-label="{{ t.language }}">
+      {% for code, label in languages.items() %}
+        <a href="{{ url_for(request.endpoint, lang=code, **request.view_args) }}"
+           lang="{{ code }}"{% if code == g.lang %} aria-current="true"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

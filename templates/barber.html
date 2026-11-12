@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ t.barber }}{% endblock %}
+{% block content %}
+  <section class="card">
+    <h1>{{ t.barber }}</h1>
+    <div class="queue-header">
+      <h2>{{ t.queue }} ({{ entries | length }})</h2>
+      <a href="{{ url_for('barber', lang=g.lang) }}">{{ t.refresh_queue }}</a>
+    </div>
+    {% if entries %}
+      <ol class="queue">
+        {% for entry in entries %}
+          <li>
+            <div class="queue-entry">
+              <div><strong>{{ entry.name }}</strong><br><span class="muted">{{ t[entry.service] }}</span></div>
+              <form method="post" action="{{ url_for('complete', token=entry.token, lang=g.lang) }}">
+                <button type="submit">{{ t.complete }}</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="muted">{{ t.empty }}</p>
+    {% endif %}
+  </section>
+{% endblock %}

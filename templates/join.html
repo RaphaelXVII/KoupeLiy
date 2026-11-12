@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{{ t.join }}{% endblock %}
+{% block content %}
+  <div class="join-layout">
+    <section class="intro">
+      <h1>{{ t.welcome }}</h1>
+      <p>{{ t.intro }}</p>
+    </section>
+    <section class="card">
+      <h2>{{ t.join }}</h2>
+      {% if error %}<p class="error" role="alert">{{ t.invalid }}</p>{% endif %}
+      <form method="post" action="{{ url_for('join', lang=g.lang) }}">
+        <label for="name">{{ t.name }}</label>
+        <input id="name" name="name" value="{{ name | default('') }}" autocomplete="name"
+               maxlength="60" required>
+        <label for="service">{{ t.service }}</label>
+        <select id="service" name="service" required>
+          <option value="">{{ t.choose }}</option>
+          {% for option in services %}
+            <option value="{{ option }}"{% if option == service %} selected{% endif %}>{{ t[option] }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">{{ t.join }}</button>
+      </form>
+    </section>
+  </div>
+{% endblock %}
