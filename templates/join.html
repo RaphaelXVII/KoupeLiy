@@ -8,9 +8,6 @@
       {% set pct = 100 if pct > 100 else pct %}
       {% set wait_h = wait_minutes // 60 %}
       {% set wait_m = wait_minutes % 60 %}
-      <div class="barber-pole" aria-hidden="true">
-        <div class="barber-pole-stripes"></div>
-      </div>
       <div class="intro-text">
         <h1>{{ t.welcome }}</h1>
         <p>{{ t.intro }}</p>
@@ -38,6 +35,11 @@
         </div>
       </div>
     </section>
+    <div class="pole-divider" aria-hidden="true">
+      <div class="barber-pole">
+        <div class="barber-pole-stripes"></div>
+      </div>
+    </div>
     <section class="card pop pop-4">
       <h2>{{ t.join }}</h2>
       {% if error %}<p class="error" role="alert">{{ t.invalid }}</p>{% endif %}
