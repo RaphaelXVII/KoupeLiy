@@ -3,7 +3,7 @@
 {% block content %}
   <section class="card ticket pop pop-3">
     <h1>{{ t.ticket }}</h1>
-    <p class="muted">{{ entry.name }} · {{ t[entry.service] }}</p>
+    <p class="muted">{{ entry.name }}{% if entry.service %} · {{ entry.service }}{% endif %}</p>
     {% if entry.completed %}
       <p class="status">{{ t.finished }}</p>
     {% else %}

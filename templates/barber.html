@@ -21,7 +21,7 @@
                 <span class="position">{{ loop.index | ordinal }}</span>
                 <span class="dot" style="background: {{ entry.token | dotcolor }}" aria-hidden="true"></span>
                 <strong class="client-name">{{ entry.name }}</strong><br>
-                <span class="muted">{{ t[entry.service] }}</span>
+                <span class="muted">{{ entry.service if entry.service else t.no_request }}</span>
               </div>
               <form method="post" action="{{ url_for('complete', token=entry.token, lang=g.lang) }}">
                 <button type="submit">{{ t.complete }}</button>

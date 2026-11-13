@@ -189,16 +189,18 @@ def join():
         )
 
     name = request.form.get("name", "").strip()
-    service = request.form.get("service", "")
-    if not 1 <= len(name) <= 60 or service not in SERVICES:
-        return page("join.html", services=SERVICES, name=name, service=service, error=True), 400
+    # The optional "Haircut request" note is stored in the existing `service`
+    # column. It may be empty — customers can join without specifying anything.
+    note = request.form.get("note", "").strip()[:300]
+    if not 1 <= len(name) <= 60:
+        return page("join.html", services=SERVICES, name=name, note=note, error=True), 400
 
     token = uuid4().hex
     db = database()
     with db:
         db.execute(
             "INSERT INTO tickets (token, name, service) VALUES (?, ?, ?)",
-            (token, name, service),
+            (token, name, note),
         )
     return redirect(url_for("ticket", token=token, lang=g.lang), code=303)
 

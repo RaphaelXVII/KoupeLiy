@@ -49,6 +49,9 @@ MESSAGES = {
         "pay_cash": "Cash",
         "pay_cashapp": "Cash App",
         "pay_zelle": "Zelle",
+        "haircut_request": "Haircut request",
+        "haircut_request_hint": "Optional — describe the cut or style you want.",
+        "no_request": "No specific request",
     },
     "es": {
         "join": "Unirme a la fila",
@@ -94,6 +97,9 @@ MESSAGES = {
         "pay_cash": "Efectivo",
         "pay_cashapp": "Cash App",
         "pay_zelle": "Zelle",
+        "haircut_request": "Solicitud de corte",
+        "haircut_request_hint": "Opcional — describe el corte o estilo que quieres.",
+        "no_request": "Sin solicitud específica",
     },
     "ht": {
         "join": "Antre nan liy lan",
@@ -139,5 +145,8 @@ MESSAGES = {
         "pay_cash": "Kach",
         "pay_cashapp": "Cash App",
         "pay_zelle": "Zelle",
+        "haircut_request": "Demann koup",
+        "haircut_request_hint": "Opsyonèl — dekri koup oswa estil ou vle a.",
+        "no_request": "Pa gen demann espesifik",
     },
 }

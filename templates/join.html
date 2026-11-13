@@ -42,14 +42,9 @@
         <label for="name">{{ t.name }}</label>
         <input id="name" name="name" value="{{ name | default('') }}" autocomplete="name"
                maxlength="60" required>
-        <label for="service">{{ t.service }}</label>
-        <select id="service" name="service" required>
-          <option value="">{{ t.choose }}</option>
-          {% set service_icons = {"haircut": "✂️", "beard": "🧔", "combo": "💈"} %}
-          {% for option in services %}
-            <option value="{{ option }}"{% if option == service %} selected{% endif %}>{{ service_icons[option] }} {{ t[option] }}</option>
-          {% endfor %}
-        </select>
+        <label for="note">{{ t.haircut_request }}</label>
+        <textarea id="note" name="note" rows="3" maxlength="300"
+                  placeholder="{{ t.haircut_request_hint }}">{{ note | default('') }}</textarea>
         <button type="submit">{{ t.join }}</button>
       </form>
       <a class="secondary-button" href="{{ url_for('public_queue', lang=g.lang) }}">{{ t.check_queue }}</a>

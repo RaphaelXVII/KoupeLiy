@@ -48,8 +48,8 @@ main { max-width: 70.5rem; padding: 1.5rem 1.25rem 3rem; margin: auto; }
 .join-layout .card { background: transparent; border: 0; padding-top: 0; }
 h1, h2 { margin: 0 0 1rem; line-height: 1.1; }
 label { display: block; font-weight: 650; margin: 1rem 0 .35rem; }
-input, select, button { font: inherit; }
-input, select {
+input, select, textarea, button { font: inherit; }
+input, select, textarea {
   width: 100%;
   min-height: 3rem;
   padding: .6rem .75rem;
@@ -58,6 +58,7 @@ input, select {
   background: #11151a;
   color: inherit;
 }
+textarea { resize: vertical; min-height: 5rem; }
 button {
   min-height: 2.75rem;
   padding: .6rem 1rem;
