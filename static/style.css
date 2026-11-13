@@ -67,7 +67,11 @@ button {
   cursor: pointer;
 }
 button:hover { background: #0057b7; }
-.join-layout button { width: 100%; margin-top: 1.25rem; }
+/* Give the main submit button clear breathing room from the input above it.
+   Scoped to the join form and the login form so dashboard buttons are
+   unaffected. */
+.join-layout button,
+.ticket form button[type="submit"] { width: 100%; margin-top: 1.75rem; }
 :focus-visible { outline: 3px solid #9b551b; outline-offset: 3px; }
 .error { color: #a02520; }
 .muted { color: #516258; }
