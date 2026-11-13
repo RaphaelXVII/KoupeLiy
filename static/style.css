@@ -261,16 +261,14 @@ button:hover { background: #3a84ec; }
   vertical-align: middle;
 }
 
-/* Intro box visuals column: center the circular wait-time gauge, nudged up */
+/* Intro box visuals column: center the circular wait-time gauge */
 .intro-visuals {
   display: flex;
   flex: none;
-  align-self: flex-start;
   align-items: center;
   justify-content: center;
   gap: clamp(1rem, 4vw, 2rem);
   flex-wrap: wrap;
-  margin-top: clamp(0.5rem, 2vw, 1.5rem);
 }
 
 /* Circular queue-time gauge: an SVG ring whose filled portion is driven by the
