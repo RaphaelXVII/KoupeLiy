@@ -20,7 +20,29 @@ a { color: #5aa9ff; text-underline-offset: .2em; }
 .site-header a { color: inherit; }
 .brand { font-size: 1.5rem; font-weight: 800; text-decoration: none; }
 .brand span { color: #9ec9ff; }
-.dashboard-link { text-align: right; }
+.header-actions { display: flex; align-items: center; gap: 0.75rem; }
+.dashboard-link {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.55rem;
+  background: #9ec9ff;
+  color: #0a1b33;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.dashboard-link:hover { background: #b6d6ff; }
+.signout-button {
+  min-height: auto;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.55rem;
+  background: #d7272b;
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.signout-button:hover { background: #e8413f; }
 main { max-width: 70.5rem; padding: 1.5rem 1.25rem 3rem; margin: auto; }
 .languages { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 2rem; }
 .languages a {
