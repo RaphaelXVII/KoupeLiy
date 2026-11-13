@@ -364,7 +364,6 @@ button:hover { background: #3a84ec; }
 .secondary-button:hover { background: #5aa9ff; color: #0a1b33; }
 
 /* Brand wordmark */
-.brand { display: inline-flex; align-items: center; }
 
 /* Public "Current line" page: centered, wider, roomier than a normal card */
 .queue-page {
