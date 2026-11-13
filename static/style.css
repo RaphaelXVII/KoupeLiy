@@ -329,3 +329,16 @@ button:hover { background: #3a84ec; }
 
 /* Brand wordmark */
 .brand { display: inline-flex; align-items: center; }
+
+/* Public "Current line" page: centered, wider, roomier than a normal card */
+.queue-page {
+  max-width: 44rem;
+  margin: 1rem auto;
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+}
+.queue-page h1 { text-align: center; font-size: clamp(2rem, 5vw, 2.75rem); }
+.queue-page .queue-summary { text-align: center; font-size: 1.1rem; margin-bottom: 1.75rem; }
+.queue-page .queue li { padding: 1rem .5rem; font-size: 1.1rem; }
+.queue-page .dot { width: 0.9rem; height: 0.9rem; }
+.queue-page .position { font-size: 1.6rem; }
+.queue-page .secondary-button { max-width: 22rem; margin-left: auto; margin-right: auto; margin-top: 1.5rem; }

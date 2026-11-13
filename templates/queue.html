@@ -1,11 +1,16 @@
 {% extends "base.html" %}
 {% block title %}{{ t.queue_now }}{% endblock %}
 {% block content %}
-  <section class="card ticket pop pop-3">
+  <section class="card queue-page pop pop-3">
     <h1>{{ t.queue_now }}</h1>
-    <p class="muted">
+    {% set wait_h = wait_minutes // 60 %}
+    {% set wait_m = wait_minutes % 60 %}
+    <p class="muted queue-summary">
       {{ waiting }} {{ t.people_waiting }}
-      {% if wait_minutes %}· {{ t.est_wait }}: {{ wait_minutes }} {{ t.minutes }}{% endif %}
+      {% if wait_minutes %}
+        · {{ t.est_wait }}:
+        {% if wait_h %}{{ wait_h }} {{ t.hours }} {% endif %}{{ wait_m }} {{ t.minutes }}
+      {% endif %}
     </p>
     {% if queue %}
       <ol class="queue">
