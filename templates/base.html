@@ -11,7 +11,8 @@
   <header class="site-header pop pop-1">
     <a class="brand" href="{{ url_for('join', lang=g.lang) }}">Koupe<span>Liy</span></a>
     <div class="header-actions">
-      <a class="dashboard-link" href="{{ url_for('barber', lang=g.lang) }}">{{ t.barber }}</a>
+      <a class="dashboard-link" href="{{ url_for('barber', lang=g.lang) }}"
+         title="{{ t.barber }}" aria-label="{{ t.barber }}">💈</a>
       {% if session.barber %}
         <form method="post" action="{{ url_for('logout', lang=g.lang) }}">
           <button type="submit" class="signout-button">{{ t.sign_out }}</button>
