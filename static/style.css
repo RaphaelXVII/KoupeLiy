@@ -223,3 +223,18 @@ button:hover { background: #0057b7; }
 .queue.names-hidden li:focus-within .client-name {
   filter: none;
 }
+
+/* Queue rows slide up and fade in on load, gently staggered one after another.
+   The per-row delay comes from the inline --row custom property on each <li>. */
+@keyframes queue-slide-up {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.queue li {
+  opacity: 0;
+  animation: queue-slide-up 0.7s ease-out forwards;
+  animation-delay: calc(0.5s + var(--row, 0) * 0.12s);
+}
+@media (prefers-reduced-motion: reduce) {
+  .queue li { opacity: 1; animation: none; }
+}

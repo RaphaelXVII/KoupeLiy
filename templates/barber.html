@@ -7,7 +7,7 @@
       <h2>{{ t.queue }} ({{ entries | length }})</h2>
       <div class="queue-header-actions">
         <label class="blur-toggle">
-          <input type="checkbox" id="blur-names"> {{ t.hide_names }}
+          <input type="checkbox" id="blur-names" checked> {{ t.hide_names }}
         </label>
         <a href="{{ url_for('barber', lang=g.lang) }}">{{ t.refresh_queue }}</a>
         <form method="post" action="{{ url_for('logout', lang=g.lang) }}">
@@ -16,9 +16,9 @@
       </div>
     </div>
     {% if entries %}
-      <ol class="queue">
+      <ol class="queue names-hidden">
         {% for entry in entries %}
-          <li>
+          <li style="--row: {{ loop.index0 }}">
             <div class="queue-entry">
               <div>
                 <span class="position">{{ loop.index | ordinal }}</span>
