@@ -3,15 +3,23 @@
 {% block content %}
   <div class="join-layout">
     <section class="intro pop pop-3">
-      <div class="intro-text">
-        <h1>{{ t.welcome }}</h1>
-        <p>{{ t.intro }}</p>
-      </div>
       {% set max_minutes = 120 %}
       {% set pct = (wait_minutes / max_minutes * 100) if wait_minutes else 0 %}
       {% set pct = 100 if pct > 100 else pct %}
       {% set wait_h = wait_minutes // 60 %}
       {% set wait_m = wait_minutes % 60 %}
+      <div class="barber-pole" aria-hidden="true">
+        <div class="barber-pole-stripes"></div>
+      </div>
+      <div class="intro-text">
+        <h1>{{ t.welcome }}</h1>
+        <p>{{ t.intro }}</p>
+        <div class="pay-methods" aria-label="{{ t.pay_methods }}">
+          <button type="button" class="pay-button pay-cash">{{ t.pay_cash }}</button>
+          <button type="button" class="pay-button pay-cashapp">{{ t.pay_cashapp }}</button>
+          <button type="button" class="pay-button pay-zelle">{{ t.pay_zelle }}</button>
+        </div>
+      </div>
       <div class="intro-visuals">
         <div class="wait-gauge" role="img"
              aria-label="{{ t.est_wait }}: {{ wait_h }} {{ t.hours }} {{ wait_m }} {{ t.minutes }}">
@@ -32,9 +40,6 @@
             {% endif %}
             <span class="wait-label">{{ t.est_wait }}</span>
           </div>
-        </div>
-        <div class="barber-pole" aria-hidden="true">
-          <div class="barber-pole-stripes"></div>
         </div>
       </div>
     </section>

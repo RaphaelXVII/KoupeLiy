@@ -45,6 +45,10 @@ MESSAGES = {
         "people_waiting": "waiting",
         "queue_now": "Current line",
         "no_wait": "No wait",
+        "pay_methods": "Accepted payment methods",
+        "pay_cash": "Cash",
+        "pay_cashapp": "Cash App",
+        "pay_zelle": "Zelle",
     },
     "es": {
         "join": "Unirme a la fila",
@@ -86,6 +90,10 @@ MESSAGES = {
         "people_waiting": "en espera",
         "queue_now": "Fila actual",
         "no_wait": "Sin espera",
+        "pay_methods": "Métodos de pago aceptados",
+        "pay_cash": "Efectivo",
+        "pay_cashapp": "Cash App",
+        "pay_zelle": "Zelle",
     },
     "ht": {
         "join": "Antre nan liy lan",
@@ -127,5 +135,9 @@ MESSAGES = {
         "people_waiting": "k ap tann",
         "queue_now": "Liy kounye a",
         "no_wait": "Pa gen tann",
+        "pay_methods": "Metòd peman nou aksepte",
+        "pay_cash": "Kach",
+        "pay_cashapp": "Cash App",
+        "pay_zelle": "Zelle",
     },
 }

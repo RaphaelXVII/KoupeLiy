@@ -40,7 +40,7 @@ main { max-width: 70.5rem; padding: 1.5rem 1.25rem 3rem; margin: auto; }
   background: #0a3a86;
   color: #fcfbf6;
 }
-.intro-text { display: grid; align-content: center; }
+.intro-text { display: grid; align-content: center; flex: 1 1 auto; }
 .intro h1 { max-width: 13ch; font-size: clamp(2.5rem, 6vw, 4.75rem); letter-spacing: -.06em; }
 .intro p { max-width: 34ch; margin-bottom: 0; color: #cfe0f5; }
 .card { background: #1b2026; border: 1px solid #2c333b; }
@@ -261,10 +261,12 @@ button:hover { background: #3a84ec; }
   vertical-align: middle;
 }
 
-/* Intro box visuals: wait-time gauge next to the barber pole, wraps on mobile */
+/* Intro box visuals column: center the circular wait-time gauge */
 .intro-visuals {
   display: flex;
+  flex: none;
   align-items: center;
+  justify-content: center;
   gap: clamp(1rem, 4vw, 2rem);
   flex-wrap: wrap;
 }
@@ -342,3 +344,26 @@ button:hover { background: #3a84ec; }
 .queue-page .dot { width: 0.9rem; height: 0.9rem; }
 .queue-page .position { font-size: 1.6rem; }
 .queue-page .secondary-button { max-width: 22rem; margin-left: auto; margin-right: auto; margin-top: 1.5rem; }
+
+/* Accepted payment methods: three rectangular buttons in the intro box */
+.pay-methods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.pay-button {
+  flex: 1 1 auto;
+  min-width: 6rem;
+  min-height: 3rem;
+  border-radius: 0.5rem;
+  border: 0;
+  font-weight: 700;
+  color: #fff;
+  cursor: default;
+  box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.3);
+}
+.pay-cash { background: #2e7d32; }      /* cash green */
+.pay-cashapp { background: #00c244; }   /* Cash App green */
+.pay-zelle { background: #6d1ed4; }     /* Zelle purple */
+.pay-button:hover { filter: brightness(1.08); }
