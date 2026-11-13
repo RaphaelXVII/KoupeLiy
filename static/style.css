@@ -103,7 +103,7 @@ button:hover { background: #3a84ec; }
   flex: none;
   position: relative;
   width: clamp(2.5rem, 6vw, 3.25rem);
-  height: clamp(8rem, 22vw, 12rem);
+  height: clamp(10rem, 28vw, 16rem);
   border-radius: 999px;
   /* metallic silver frame */
   padding: 0.9rem 0;
