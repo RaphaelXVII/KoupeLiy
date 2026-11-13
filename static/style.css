@@ -51,7 +51,7 @@ input, select {
   width: 100%;
   min-height: 3rem;
   padding: .6rem .75rem;
-  border: 1px solid #a9b5ac;
+  border: 1px solid #000000;
   border-radius: .55rem;
   background: white;
   color: inherit;
@@ -163,14 +163,29 @@ button:hover { background: #0057b7; }
 }
 .pop {
   opacity: 0;
-  animation: pop-in 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.2) forwards;
+  animation: pop-in 0.8s cubic-bezier(0.2, 0.8, 0.3, 1.2) forwards;
 }
-.pop-1 { animation-delay: 0.05s; }
-.pop-2 { animation-delay: 0.15s; }
-.pop-3 { animation-delay: 0.25s; }
-.pop-4 { animation-delay: 0.35s; }
-.pop-5 { animation-delay: 0.45s; }
+.pop-1 { animation-delay: 0.1s; }
+.pop-2 { animation-delay: 0.25s; }
+.pop-3 { animation-delay: 0.4s; }
+.pop-4 { animation-delay: 0.55s; }
+.pop-5 { animation-delay: 0.7s; }
 /* Respect users who prefer reduced motion: show everything instantly. */
 @media (prefers-reduced-motion: reduce) {
   .pop { opacity: 1; animation: none; }
 }
+
+/* Dashboard header actions: refresh link + a link-styled sign-out button */
+.queue-header-actions { display: flex; align-items: center; gap: 1rem; }
+.link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  min-height: auto;
+  color: #0057b7;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  cursor: pointer;
+}
+.link-button:hover { background: none; }
