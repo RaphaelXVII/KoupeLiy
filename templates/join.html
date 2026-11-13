@@ -21,8 +21,9 @@
         <label for="service">{{ t.service }}</label>
         <select id="service" name="service" required>
           <option value="">{{ t.choose }}</option>
+          {% set service_icons = {"haircut": "✂️", "beard": "🧔", "combo": "💈"} %}
           {% for option in services %}
-            <option value="{{ option }}"{% if option == service %} selected{% endif %}>{{ t[option] }}</option>
+            <option value="{{ option }}"{% if option == service %} selected{% endif %}>{{ service_icons[option] }} {{ t[option] }}</option>
           {% endfor %}
         </select>
         <button type="submit">{{ t.join }}</button>

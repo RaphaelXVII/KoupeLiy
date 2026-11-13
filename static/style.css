@@ -193,3 +193,33 @@ button:hover { background: #0057b7; }
   cursor: pointer;
 }
 .link-button:hover { background: none; }
+
+/* Colored dot next to each queued customer (color derived from their token) */
+.dot {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin: 0 0.3rem;
+  vertical-align: middle;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+/* Blur-names toggle control in the dashboard header */
+.blur-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 650;
+  cursor: pointer;
+}
+/* When the toggle is on, blur customer names; reveal on hover/focus/tap since
+   the barber is allowed to see them. This is a shoulder-surfing guard only. */
+.queue.names-hidden .client-name {
+  filter: blur(5px);
+  transition: filter 0.15s ease;
+}
+.queue.names-hidden .client-name:hover,
+.queue.names-hidden li:focus-within .client-name {
+  filter: none;
+}

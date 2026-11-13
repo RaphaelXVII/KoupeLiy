@@ -68,6 +68,22 @@ def ordinal(number):
     return f"{number}{suffix}"
 
 
+@app.template_filter("dotcolor")
+def dotcolor(value):
+    """Jinja filter: turn any string (a ticket token) into a stable HSL color.
+
+    Hashes the string to a hue in 0–359 so each customer gets a consistent,
+    pseudo-random color for their queue dot (same token -> same color every
+    refresh, even across server restarts). Saturation/lightness are fixed so
+    the dots stay vivid and legible.
+    """
+    import hashlib
+
+    digest = hashlib.md5(str(value).encode()).hexdigest()
+    hue = int(digest, 16) % 360
+    return f"hsl({hue}, 70%, 55%)"
+
+
 def database():
     """Return the request-scoped SQLite connection, creating it on first use.
 
