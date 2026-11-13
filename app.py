@@ -187,15 +187,21 @@ def join():
 
 @app.get("/ticket/<token>")
 def ticket(token):
-    """Show a single customer's ticket and their current queue position.
+    """Show a single customer's ticket, their position, and the full queue.
 
-    Looks up the ticket by its token and, in the same query, counts how many
-    not-yet-completed tickets were created before it (`ahead`) — that number
-    plus one is the customer's place in line. Returns 404 if the token is
-    unknown.
+    Looks up the ticket by its token and counts how many not-yet-completed
+    tickets were created before it (`ahead`) — that number plus one is the
+    customer's place in line. Returns 404 if the token is unknown.
+
+    Also builds the full waiting queue for display. For privacy, the real name
+    is ONLY included for the viewer's own entry; every other entry's name is
+    censored on the server (replaced with "Customer N") so other people's names
+    never reach the browser at all. Each entry carries its token so the
+    template can render a stable colored dot.
     """
-    entry = database().execute("""
-        SELECT name, service, completed,
+    db = database()
+    entry = db.execute("""
+        SELECT id, name, service, completed,
             (SELECT COUNT(*) FROM tickets AS earlier
              WHERE earlier.id < current.id AND earlier.completed = 0) AS ahead
         FROM tickets AS current
@@ -203,7 +209,23 @@ def ticket(token):
     """, (token,)).fetchone()
     if entry is None:
         abort(404)
-    return page("ticket.html", entry=entry)
+
+    # Full waiting line, in order. Build a privacy-safe view: keep the real
+    # name only for this viewer's row, censor all others before sending.
+    rows = db.execute("""
+        SELECT id, token, name FROM tickets
+        WHERE completed = 0 ORDER BY id
+    """).fetchall()
+    queue = []
+    for position, row in enumerate(rows, start=1):
+        is_me = row["id"] == entry["id"]
+        queue.append({
+            "token": row["token"],
+            "position": position,
+            "is_me": is_me,
+            "name": row["name"] if is_me else None,
+        })
+    return page("ticket.html", entry=entry, queue=queue)
 
 
 @app.route("/barber/login", methods=["GET", "POST"])

@@ -9,6 +9,29 @@
     {% else %}
       <p class="status">{{ t.waiting if entry.ahead else t.next }}</p>
       <p>{{ t.position }} <strong class="position">{{ (entry.ahead + 1) | ordinal }}</strong></p>
+
+      {% if queue %}
+        <h2>{{ t.line }}</h2>
+        <ol class="queue">
+          {% for item in queue %}
+            <li style="--row: {{ loop.index0 }}"{% if item.is_me %} class="me"{% endif %}>
+              <div class="queue-entry">
+                <div>
+                  <span class="position">{{ item.position | ordinal }}</span>
+                  <span class="dot" style="background: {{ item.token | dotcolor }}" aria-hidden="true"></span>
+                  {% if item.is_me %}
+                    <strong class="client-name">{{ item.name }}</strong>
+                    <span class="you-tag">{{ t.you_label }}</span>
+                  {% else %}
+                    <strong class="client-name censored">{{ t.hidden_name }}</strong>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      {% endif %}
+
       <a href="{{ url_for('ticket', token=request.view_args.token, lang=g.lang) }}">{{ t.refresh }}</a>
     {% endif %}
   </section>

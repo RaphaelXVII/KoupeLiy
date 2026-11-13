@@ -238,3 +238,25 @@ button:hover { background: #0057b7; }
 @media (prefers-reduced-motion: reduce) {
   .queue li { opacity: 1; animation: none; }
 }
+
+/* Ticket-page queue: other people's names are censored server-side. Style the
+   placeholder as a muted, blurred-looking chip and highlight the viewer's row. */
+.client-name.censored {
+  color: #8a938c;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  filter: blur(3px);
+  user-select: none;
+}
+.queue li.me { background: #eef4ff; border-radius: 0.6rem; }
+.you-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 1rem;
+  background: #0057b7;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  vertical-align: middle;
+}

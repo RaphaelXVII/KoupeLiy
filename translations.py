@@ -35,6 +35,9 @@ MESSAGES = {
         "login_error": "Incorrect password.",
         "login_hint": "This area is for barbers only.",
         "hide_names": "Hide names",
+        "line": "The line",
+        "you_label": "You",
+        "hidden_name": "Hidden",
     },
     "es": {
         "join": "Unirme a la fila",
@@ -66,6 +69,9 @@ MESSAGES = {
         "login_error": "Contraseña incorrecta.",
         "login_hint": "Esta área es solo para barberos.",
         "hide_names": "Ocultar nombres",
+        "line": "La fila",
+        "you_label": "Tú",
+        "hidden_name": "Oculto",
     },
     "ht": {
         "join": "Antre nan liy lan",
@@ -97,5 +103,8 @@ MESSAGES = {
         "login_error": "Modpas la pa kòrèk.",
         "login_hint": "Zòn sa a se pou babè sèlman.",
         "hide_names": "Kache non yo",
+        "line": "Liy lan",
+        "you_label": "Ou",
+        "hidden_name": "Kache",
     },
 }
