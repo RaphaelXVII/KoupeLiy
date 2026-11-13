@@ -6,9 +6,6 @@
     <div class="queue-header">
       <h2>{{ t.queue }} ({{ entries | length }})</h2>
       <div class="queue-header-actions">
-        <label class="blur-toggle">
-          <input type="checkbox" id="blur-names" checked> {{ t.hide_names }}
-        </label>
         <a href="{{ url_for('barber', lang=g.lang) }}">{{ t.refresh_queue }}</a>
         <form method="post" action="{{ url_for('logout', lang=g.lang) }}">
           <button type="submit" class="link-button">{{ t.sign_out }}</button>
@@ -16,7 +13,7 @@
       </div>
     </div>
     {% if entries %}
-      <ol class="queue names-hidden">
+      <ol class="queue">
         {% for entry in entries %}
           <li style="--row: {{ loop.index0 }}">
             <div class="queue-entry">
@@ -37,12 +34,4 @@
       <p class="muted">{{ t.empty }}</p>
     {% endif %}
   </section>
-  <script>
-    // Barber-side convenience: toggle a blur over customer names so someone
-    // glancing at the screen can't read them. Names unblur on hover/tap since
-    // the barber is authorized to see them. This is a visual guard only.
-    document.getElementById('blur-names').addEventListener('change', function (e) {
-      document.querySelector('.queue').classList.toggle('names-hidden', e.target.checked);
-    });
-  </script>
 {% endblock %}
