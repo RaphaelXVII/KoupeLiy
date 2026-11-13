@@ -37,12 +37,12 @@ main { max-width: 70.5rem; padding: 1.5rem 1.25rem 3rem; margin: auto; }
   display: flex;
   align-items: center;
   gap: clamp(1rem, 4vw, 2.5rem);
-  background: #0a3a86;
-  color: #fcfbf6;
+  background: transparent;
+  color: inherit;
 }
 .intro-text { display: grid; align-content: center; flex: 1 1 auto; }
 .intro h1 { max-width: 13ch; font-size: clamp(2.5rem, 6vw, 4.75rem); letter-spacing: -.06em; }
-.intro p { max-width: 34ch; margin-bottom: 0; color: #cfe0f5; }
+.intro p { max-width: 34ch; margin-bottom: 0; color: #9aa6b0; }
 .card { background: #1b2026; border: 1px solid #2c333b; }
 h1, h2 { margin: 0 0 1rem; line-height: 1.1; }
 label { display: block; font-weight: 650; margin: 1rem 0 .35rem; }
