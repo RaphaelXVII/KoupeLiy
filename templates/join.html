@@ -10,9 +10,11 @@
       {% set max_minutes = 120 %}
       {% set pct = (wait_minutes / max_minutes * 100) if wait_minutes else 0 %}
       {% set pct = 100 if pct > 100 else pct %}
+      {% set wait_h = wait_minutes // 60 %}
+      {% set wait_m = wait_minutes % 60 %}
       <div class="intro-visuals">
         <div class="wait-gauge" role="img"
-             aria-label="{{ t.est_wait }}: {{ wait_minutes }} {{ t.minutes }}">
+             aria-label="{{ t.est_wait }}: {{ wait_h }} {{ t.hours }} {{ wait_m }} {{ t.minutes }}">
           <svg viewBox="0 0 120 120" class="wait-gauge-svg">
             <circle class="wait-track" cx="60" cy="60" r="52"></circle>
             <circle class="wait-progress" cx="60" cy="60" r="52"
@@ -20,14 +22,19 @@
           </svg>
           <div class="wait-center">
             {% if wait_minutes %}
-              <span class="wait-value">{{ wait_minutes }}</span>
-              <span class="wait-unit">{{ t.minutes }}</span>
+              <span class="wait-value">
+                {% if wait_h %}{{ wait_h }}<small>{{ t.hours }}</small>{% endif %}
+                {{ wait_m }}<small>{{ t.minutes }}</small>
+              </span>
             {% else %}
               <span class="wait-value">0</span>
               <span class="wait-unit">{{ t.no_wait }}</span>
             {% endif %}
             <span class="wait-label">{{ t.est_wait }}</span>
           </div>
+        </div>
+        <div class="barber-pole" aria-hidden="true">
+          <div class="barber-pole-stripes"></div>
         </div>
       </div>
     </section>

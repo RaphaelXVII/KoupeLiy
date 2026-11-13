@@ -306,7 +306,8 @@ button:hover { background: #0057b7; }
   color: #fcfbf6;
   line-height: 1.1;
 }
-.wait-value { font-size: clamp(1.8rem, 7vw, 2.6rem); font-weight: 800; }
+.wait-value { font-size: clamp(1.6rem, 6vw, 2.3rem); font-weight: 800; }
+.wait-value small { font-size: 0.5em; font-weight: 650; margin: 0 0.15em 0 0.05em; }
 .wait-unit { font-size: 0.95rem; font-weight: 650; opacity: 0.9; }
 .wait-label { font-size: 0.7rem; margin-top: 0.25rem; opacity: 0.85; }
 
@@ -326,14 +327,5 @@ button:hover { background: #0057b7; }
 }
 .secondary-button:hover { background: #0057b7; color: #fff; }
 
-/* Brand lockup: small spinning barber pole sits left of the KoupeLiy wordmark */
-.brand { display: inline-flex; align-items: center; gap: 0.6rem; }
-.barber-pole-sm {
-  width: 0.85rem;
-  height: 2rem;
-  padding: 0.18rem 0;
-  flex: none;
-  box-shadow: 0 0.15rem 0.4rem rgba(0, 0, 0, 0.4);
-}
-.barber-pole-sm::before,
-.barber-pole-sm::after { height: 0.28rem; }
+/* Brand wordmark */
+.brand { display: inline-flex; align-items: center; }

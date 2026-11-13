@@ -9,12 +9,7 @@
 </head>
 <body>
   <header class="site-header pop pop-1">
-    <a class="brand" href="{{ url_for('join', lang=g.lang) }}">
-      <span class="barber-pole barber-pole-sm" aria-hidden="true">
-        <span class="barber-pole-stripes"></span>
-      </span>
-      Koupe<span>Liy</span>
-    </a>
+    <a class="brand" href="{{ url_for('join', lang=g.lang) }}">Koupe<span>Liy</span></a>
     <a class="dashboard-link" href="{{ url_for('barber', lang=g.lang) }}">{{ t.barber }}</a>
   </header>
   <main>
