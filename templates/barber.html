@@ -5,7 +5,12 @@
     <h1>{{ t.barber }}</h1>
     <div class="queue-header">
       <h2>{{ t.queue }} ({{ entries | length }})</h2>
-      <a href="{{ url_for('barber', lang=g.lang) }}">{{ t.refresh_queue }}</a>
+      <div class="queue-header-actions">
+        <a href="{{ url_for('barber', lang=g.lang) }}">{{ t.refresh_queue }}</a>
+        <form method="post" action="{{ url_for('logout', lang=g.lang) }}">
+          <button type="submit" class="link-button">{{ t.sign_out }}</button>
+        </form>
+      </div>
     </div>
     {% if entries %}
       <ol class="queue">

@@ -1,8 +1,12 @@
 from pathlib import Path
+import os
 import sqlite3
 from uuid import uuid4
 
-from flask import Flask, abort, g, redirect, render_template, request, url_for
+from flask import (
+    Flask, abort, flash, g, redirect, render_template, request, session, url_for
+)
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from translations import LANGUAGES, MESSAGES
 
@@ -13,8 +17,38 @@ app = Flask(__name__)
 app.config["DATABASE"] = Path(app.instance_path) / "queue.sqlite3"
 app.config["MAX_CONTENT_LENGTH"] = 4096
 
+# Secret key signs the session cookie that remembers a logged-in barber.
+# Set FLASK_SECRET_KEY in the environment for production; the fallback is only
+# meant for local development.
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-insecure-key-change-me")
+
+# The barber signs in with a single shared password. We store only its hash,
+# read from the BARBER_PASSWORD_HASH environment variable. If that isn't set we
+# fall back to a dev password ("barber") so the app still runs locally.
+BARBER_PASSWORD_HASH = os.environ.get(
+    "BARBER_PASSWORD_HASH", generate_password_hash("barber")
+)
+
 # The services a customer is allowed to pick. Used to validate form input.
 SERVICES = ("haircut", "beard", "combo")
+
+
+def login_required(view):
+    """Decorator that blocks a view unless the barber is logged in.
+
+    If there's no `barber` flag in the session, redirect to the login page
+    (remembering where they were headed via `?next=`) instead of running the
+    view. Used to protect the dashboard and the "mark complete" action.
+    """
+    from functools import wraps
+
+    @wraps(view)
+    def wrapped(*args, **kwargs):
+        if not session.get("barber"):
+            return redirect(url_for("login", next=request.path, lang=g.lang))
+        return view(*args, **kwargs)
+
+    return wrapped
 
 
 @app.template_filter("ordinal")
@@ -156,12 +190,45 @@ def ticket(token):
     return page("ticket.html", entry=entry)
 
 
+@app.route("/barber/login", methods=["GET", "POST"])
+def login():
+    """Barber login page.
+
+    GET  -> show the password form.
+    POST -> check the submitted password against the stored hash. On success,
+            mark the session as logged in and redirect to the dashboard (or to
+            the `next` page they were trying to reach). On failure, re-render
+            the form with an error and a 401 status.
+    """
+    if session.get("barber"):
+        return redirect(url_for("barber", lang=g.lang), code=303)
+
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        if check_password_hash(BARBER_PASSWORD_HASH, password):
+            session["barber"] = True
+            target = request.args.get("next") or url_for("barber", lang=g.lang)
+            return redirect(target, code=303)
+        return page("login.html", error=True), 401
+
+    return page("login.html")
+
+
+@app.post("/barber/logout")
+def logout():
+    """Log the barber out by clearing the session flag, then go to login."""
+    session.pop("barber", None)
+    return redirect(url_for("login", lang=g.lang), code=303)
+
+
 @app.get("/barber")
+@login_required
 def barber():
     """Barber dashboard: list everyone still waiting, in arrival order.
 
-    Selects all tickets that haven't been completed yet, ordered by id (the
-    order they joined), and hands them to the template to render the queue.
+    Protected by @login_required. Selects all tickets that haven't been
+    completed yet, ordered by id (the order they joined), and hands them to
+    the template to render the queue.
     """
     entries = database().execute("""
         SELECT token, name, service
@@ -171,12 +238,14 @@ def barber():
 
 
 @app.post("/barber/complete/<token>")
+@login_required
 def complete(token):
     """Mark a ticket as completed, then return to the barber dashboard.
 
-    Triggered when the barber presses "complete" on a customer. Flips the
-    ticket's `completed` flag to 1 (which removes it from the waiting queue)
-    and redirects back to /barber (303 to avoid resubmitting on refresh).
+    Protected by @login_required. Triggered when the barber presses "complete"
+    on a customer. Flips the ticket's `completed` flag to 1 (which removes it
+    from the waiting queue) and redirects back to /barber (303 to avoid
+    resubmitting on refresh).
     """
     db = database()
     with db:
