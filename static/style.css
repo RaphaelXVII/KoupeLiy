@@ -117,6 +117,13 @@ button:hover { background: #3a84ec; }
 @media (max-width: 42rem) {
   .join-layout { grid-template-columns: 1fr; }
   .languages { margin-bottom: 1.25rem; }
+  /* On phones, center the hero text + timer and the join form */
+  .intro { flex-direction: column; align-items: center; text-align: center; }
+  .intro-text { justify-items: center; }
+  .intro h1, .intro p { max-width: none; }
+  .intro-visuals { width: 100%; justify-content: center; }
+  .join-layout .card { text-align: center; }
+  .join-layout .card label { text-align: center; }
 }
 
 /* --- Spinning barber pole --- */
@@ -177,9 +184,9 @@ button:hover { background: #3a84ec; }
 @media (prefers-reduced-motion: reduce) {
   .barber-pole-stripes { animation: none; }
 }
-/* On narrow screens the hero stacks, so center the pole under the text. */
+/* On narrow screens the hero stacks vertically and stays centered. */
 @media (max-width: 42rem) {
-  .intro { flex-direction: column; align-items: flex-start; }
+  .intro { flex-direction: column; align-items: center; }
 }
 
 /* --- Page entrance "pop" animation --- */
