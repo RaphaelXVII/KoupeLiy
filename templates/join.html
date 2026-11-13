@@ -14,11 +14,6 @@
       <div class="intro-text">
         <h1>{{ t.welcome }}</h1>
         <p>{{ t.intro }}</p>
-        <div class="pay-methods" aria-label="{{ t.pay_methods }}">
-          <button type="button" class="pay-button pay-cash">{{ t.pay_cash }}</button>
-          <button type="button" class="pay-button pay-cashapp">{{ t.pay_cashapp }}</button>
-          <button type="button" class="pay-button pay-zelle">{{ t.pay_zelle }}</button>
-        </div>
       </div>
       <div class="intro-visuals">
         <div class="wait-gauge" role="img"
@@ -62,5 +57,10 @@
       </form>
       <a class="secondary-button" href="{{ url_for('public_queue', lang=g.lang) }}">{{ t.check_queue }}</a>
     </section>
+  </div>
+  <div class="pay-methods pop pop-5" aria-label="{{ t.pay_methods }}">
+    <button type="button" class="pay-button pay-cash">{{ t.pay_cash }}</button>
+    <button type="button" class="pay-button pay-cashapp">{{ t.pay_cashapp }}</button>
+    <button type="button" class="pay-button pay-zelle">{{ t.pay_zelle }}</button>
   </div>
 {% endblock %}
