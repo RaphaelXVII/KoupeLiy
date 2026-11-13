@@ -260,3 +260,80 @@ button:hover { background: #0057b7; }
   font-weight: 700;
   vertical-align: middle;
 }
+
+/* Intro box visuals: wait-time gauge next to the barber pole, wraps on mobile */
+.intro-visuals {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 4vw, 2rem);
+  flex-wrap: wrap;
+}
+
+/* Circular queue-time gauge: an SVG ring whose filled portion is driven by the
+   --pct custom property, with the estimated minutes shown in the middle. */
+.wait-gauge {
+  position: relative;
+  width: clamp(8rem, 30vw, 11rem);
+  height: clamp(8rem, 30vw, 11rem);
+  flex: none;
+}
+.wait-gauge-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); /* start the ring at 12 o'clock */
+}
+.wait-track,
+.wait-progress {
+  fill: none;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+.wait-track { stroke: rgba(255, 255, 255, 0.25); }
+.wait-progress {
+  stroke: #ffffff;
+  /* circumference of r=52 is 2*pi*52 ~= 326.7; show --pct% of it */
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: calc(326.7 - (326.7 * var(--pct, 0) / 100));
+  transition: stroke-dashoffset 0.8s ease;
+}
+.wait-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  color: #fcfbf6;
+  line-height: 1.1;
+}
+.wait-value { font-size: clamp(1.8rem, 7vw, 2.6rem); font-weight: 800; }
+.wait-unit { font-size: 0.95rem; font-weight: 650; opacity: 0.9; }
+.wait-label { font-size: 0.7rem; margin-top: 0.25rem; opacity: 0.85; }
+
+/* Secondary (outline) button used for "Check the queue" / "Join the line" */
+.secondary-button {
+  display: block;
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 0.7rem 1rem;
+  border: 2px solid #0057b7;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: #0057b7;
+  font-weight: 650;
+  text-align: center;
+  text-decoration: none;
+}
+.secondary-button:hover { background: #0057b7; color: #fff; }
+
+/* Brand lockup: small spinning barber pole sits left of the KoupeLiy wordmark */
+.brand { display: inline-flex; align-items: center; gap: 0.6rem; }
+.barber-pole-sm {
+  width: 0.85rem;
+  height: 2rem;
+  padding: 0.18rem 0;
+  flex: none;
+  box-shadow: 0 0.15rem 0.4rem rgba(0, 0, 0, 0.4);
+}
+.barber-pole-sm::before,
+.barber-pole-sm::after { height: 0.28rem; }

@@ -7,8 +7,28 @@
         <h1>{{ t.welcome }}</h1>
         <p>{{ t.intro }}</p>
       </div>
-      <div class="barber-pole" aria-hidden="true">
-        <div class="barber-pole-stripes"></div>
+      {% set max_minutes = 120 %}
+      {% set pct = (wait_minutes / max_minutes * 100) if wait_minutes else 0 %}
+      {% set pct = 100 if pct > 100 else pct %}
+      <div class="intro-visuals">
+        <div class="wait-gauge" role="img"
+             aria-label="{{ t.est_wait }}: {{ wait_minutes }} {{ t.minutes }}">
+          <svg viewBox="0 0 120 120" class="wait-gauge-svg">
+            <circle class="wait-track" cx="60" cy="60" r="52"></circle>
+            <circle class="wait-progress" cx="60" cy="60" r="52"
+                    style="--pct: {{ pct }}"></circle>
+          </svg>
+          <div class="wait-center">
+            {% if wait_minutes %}
+              <span class="wait-value">{{ wait_minutes }}</span>
+              <span class="wait-unit">{{ t.minutes }}</span>
+            {% else %}
+              <span class="wait-value">0</span>
+              <span class="wait-unit">{{ t.no_wait }}</span>
+            {% endif %}
+            <span class="wait-label">{{ t.est_wait }}</span>
+          </div>
+        </div>
       </div>
     </section>
     <section class="card pop pop-4">
@@ -28,6 +48,7 @@
         </select>
         <button type="submit">{{ t.join }}</button>
       </form>
+      <a class="secondary-button" href="{{ url_for('public_queue', lang=g.lang) }}">{{ t.check_queue }}</a>
     </section>
   </div>
 {% endblock %}

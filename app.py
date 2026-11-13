@@ -32,6 +32,17 @@ BARBER_PASSWORD_HASH = os.environ.get(
 # The services a customer is allowed to pick. Used to validate form input.
 SERVICES = ("haircut", "beard", "combo")
 
+# Average minutes one client takes (a haircut runs about 25–30 min). Used to
+# estimate the queue wait time shown on the home page gauge.
+MINUTES_PER_CLIENT = 27
+
+
+def waiting_count():
+    """Return how many customers are currently waiting (not yet completed)."""
+    return database().execute(
+        "SELECT COUNT(*) FROM tickets WHERE completed = 0"
+    ).fetchone()[0]
+
 
 def login_required(view):
     """Decorator that blocks a view unless the barber is logged in.
@@ -168,7 +179,14 @@ def join():
             ticket page (303 so a refresh doesn't resubmit the form).
     """
     if request.method == "GET":
-        return page("join.html", services=SERVICES)
+        count = waiting_count()
+        return page(
+            "join.html",
+            services=SERVICES,
+            waiting=count,
+            wait_minutes=count * MINUTES_PER_CLIENT,
+            per_client=MINUTES_PER_CLIENT,
+        )
 
     name = request.form.get("name", "").strip()
     service = request.form.get("service", "")
@@ -226,6 +244,32 @@ def ticket(token):
             "name": row["name"] if is_me else None,
         })
     return page("ticket.html", entry=entry, queue=queue)
+
+
+@app.get("/queue")
+def public_queue():
+    """Public, anonymous view of the whole waiting line.
+
+    Anyone can open this (no ticket, no login) to see how long the line is.
+    For privacy, NO real names are sent to the browser — every entry is shown
+    as a censored placeholder with just its position and colored dot. Also
+    shows the estimated wait time so walk-ins can decide whether to come in.
+    """
+    db = database()
+    rows = db.execute("""
+        SELECT token FROM tickets WHERE completed = 0 ORDER BY id
+    """).fetchall()
+    queue = [
+        {"token": row["token"], "position": position}
+        for position, row in enumerate(rows, start=1)
+    ]
+    count = len(queue)
+    return page(
+        "queue.html",
+        queue=queue,
+        waiting=count,
+        wait_minutes=count * MINUTES_PER_CLIENT,
+    )
 
 
 @app.route("/barber/login", methods=["GET", "POST"])

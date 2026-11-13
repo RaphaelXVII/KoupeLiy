@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ t.queue_now }}{% endblock %}
+{% block content %}
+  <section class="card ticket pop pop-3">
+    <h1>{{ t.queue_now }}</h1>
+    <p class="muted">
+      {{ waiting }} {{ t.people_waiting }}
+      {% if wait_minutes %}· {{ t.est_wait }}: {{ wait_minutes }} {{ t.minutes }}{% endif %}
+    </p>
+    {% if queue %}
+      <ol class="queue">
+        {% for item in queue %}
+          <li style="--row: {{ loop.index0 }}">
+            <div class="queue-entry">
+              <div>
+                <span class="position">{{ item.position | ordinal }}</span>
+                <span class="dot" style="background: {{ item.token | dotcolor }}" aria-hidden="true"></span>
+                <strong class="client-name censored">{{ t.hidden_name }}</strong>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="muted">{{ t.empty }}</p>
+    {% endif %}
+    <a class="secondary-button" href="{{ url_for('join', lang=g.lang) }}">{{ t.join }}</a>
+  </section>
+{% endblock %}
