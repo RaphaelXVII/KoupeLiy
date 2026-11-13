@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ t.ticket }}{% endblock %}
 {% block content %}
-  <section class="card ticket">
+  <section class="card ticket pop pop-3">
     <h1>{{ t.ticket }}</h1>
     <p class="muted">{{ entry.name }} · {{ t[entry.service] }}</p>
     {% if entry.completed %}

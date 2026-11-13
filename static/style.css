@@ -152,3 +152,25 @@ button:hover { background: #0057b7; }
 @media (max-width: 42rem) {
   .intro { flex-direction: column; align-items: flex-start; }
 }
+
+/* --- Page entrance "pop" animation --- */
+/* Elements tagged with .pop scale up from 90% and fade in on page load.
+   Each .pop-N variant adds a short delay so pieces cascade in one after
+   another instead of all at once. */
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.pop {
+  opacity: 0;
+  animation: pop-in 0.45s cubic-bezier(0.2, 0.8, 0.3, 1.2) forwards;
+}
+.pop-1 { animation-delay: 0.05s; }
+.pop-2 { animation-delay: 0.15s; }
+.pop-3 { animation-delay: 0.25s; }
+.pop-4 { animation-delay: 0.35s; }
+.pop-5 { animation-delay: 0.45s; }
+/* Respect users who prefer reduced motion: show everything instantly. */
+@media (prefers-reduced-motion: reduce) {
+  .pop { opacity: 1; animation: none; }
+}

@@ -2,7 +2,7 @@
 {% block title %}{{ t.join }}{% endblock %}
 {% block content %}
   <div class="join-layout">
-    <section class="intro">
+    <section class="intro pop pop-3">
       <div class="intro-text">
         <h1>{{ t.welcome }}</h1>
         <p>{{ t.intro }}</p>
@@ -11,7 +11,7 @@
         <div class="barber-pole-stripes"></div>
       </div>
     </section>
-    <section class="card">
+    <section class="card pop pop-4">
       <h2>{{ t.join }}</h2>
       {% if error %}<p class="error" role="alert">{{ t.invalid }}</p>{% endif %}
       <form method="post" action="{{ url_for('join', lang=g.lang) }}">
